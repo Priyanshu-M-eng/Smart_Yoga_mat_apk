@@ -1,72 +1,102 @@
-<<<<<<< HEAD
-# Smart Yoga Mat POC (Flutter)
+# Smart Yoga Mat App 🧘‍♀️
 
-Prototype mobile app that connects to an ESP32-based smart yoga mat over Classic Bluetooth (SPP) and Bluetooth Low Energy (BLE), streams basic data, sends commands, and keeps the connection stable (auto-reconnect, retries, timeouts, background resume).
+A production-ready Flutter mobile application for connecting to ESP32-based smart yoga mats via **Bluetooth Low Energy (BLE GATT)** and **Classic Bluetooth (SPP)**. Features robust connection management, auto-reconnect, real-time data streaming, and a modern Material 3 UI.
 
-## What it demonstrates
-- Device discovery and pairing
-  - BLE scan with live advertisement names
-  - Classic scan + one-tap Pair for SPP devices
-- Data exchange
-  - BLE GATT: notify stream (RX), write (TX), optional read-once
-  - Classic SPP: simple text/byte stream
-- Connection wrapper (state machine)
-  - Disconnected → Connecting → Connected → Retrying → Error
-  - Auto-reconnect with backoff (x3), retry on drops, resume on app foreground
-- Simple, clean UI
-  - Devices list, status chip, reconnect/pair buttons
-  - Console to view RX/TX lines, Send command box, quick Read (BLE)
+---
 
-## ESP32 expectations
-- BLE service/characteristics: update these to match your firmware in `lib/main.dart`:
-  - `BleClient.serviceUuid` (default: 0000ffff-0000-1000-8000-00805f9b34fb)
-  - `BleClient.rxCharUuid` (notify/read)
-  - `BleClient.txCharUuid` (write without response)
-- Classic SPP: expose a serial stream at 9600/115200 etc.; newline-delimited messages recommended.
+## 📱 Features
 
-## Build & Run
-1) Install Flutter SDK and platform toolchains.
-2) Fetch deps:
+### Core Functionality
+- ✅ **Dual Bluetooth Support**: BLE (GATT) and Classic Bluetooth (SPP)
+- ✅ **Device Discovery & Pairing**: Scan for nearby devices with signal strength indicators
+- ✅ **Robust Connection Management**: Auto-reconnect with exponential backoff
+- ✅ **Real-time Data Streaming**: Bidirectional communication with the yoga mat
+- ✅ **Background Continuity**: Reconnects automatically when app resumes
+- ✅ **Connection Statistics**: Track data rate, bytes transferred, uptime, and reconnection attempts
+
+### User Interface
+- 🎨 **Modern Material 3 Design**: Beautiful gradient app bar and card-based layout
+- 🌗 **Light & Dark Mode Support**: System-aware theming
+- 📱 **Responsive Layout**: Adapts to phones and tablets
+- 📊 **Connection Stats Dashboard**: Real-time monitoring of connection quality
+- 💬 **Interactive Console**: Send commands and view responses in real-time
+- ⚙️ **Settings Panel**: Configure auto-reconnect and view device UUIDs
+
+---
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Flutter SDK ≥ 3.9.0
+- Android Studio / VS Code
+- Android device or emulator (API level 21+)
+- ESP32 device with Bluetooth configured
+
+### Installation
+
+1. **Install dependencies**:
+   ```bash
+   flutter pub get
+   ```
+
+2. **Run the app**:
+   ```bash
+   flutter run
+   ```
+
+3. **Build APK**:
+   ```bash
+   flutter build apk --release
+   ```
+
+---
+
+## 🔧 Configuration
+
+### ESP32 Bluetooth UUIDs
+
+Update the BLE service/characteristic UUIDs in `lib/services/ble_client.dart` to match your ESP32:
+
+```dart
+static final serviceUuid = fbp.Guid('0000ffff-0000-1000-8000-00805f9b34fb');
+static final rxCharUuid = fbp.Guid('0000ff01-0000-1000-8000-00805f9b34fb');
+static final txCharUuid = fbp.Guid('0000ff02-0000-1000-8000-00805f9b34fb');
 ```
-flutter pub get
-```
-3) Android (recommended for testing Classic + BLE):
-```
-flutter run
-# or release APK
-flutter build apk --release
-```
-4) iOS:
-- Open `ios/Runner.xcworkspace` in Xcode
-- Ensure a signing team is set, build to a real device (Bluetooth not available on Simulator)
-- Usage strings are included in Info.plist (Bluetooth)
 
-Permissions (Android):
-- Android 12+: BLUETOOTH_SCAN / BLUETOOTH_CONNECT requested at runtime
-- <= Android 11: Bluetooth + Location permissions requested
+---
 
-## How to use
-1) Choose Mode: BLE (GATT) or Classic (SPP)
-2) Scan → select your yoga mat device
-3) For Classic, tap Pair if needed, then Connect (tap device)
-4) Use the Console:
-   - Enter a command (e.g. `LED:ON`) and Send
-   - For BLE, you can also Read (single GATT read on RX)
-5) Observe RX/TX lines; app auto-reconnects on drops and resumes after returning to foreground.
+## 📖 Usage
 
-## Notes
-- Device names in BLE come from advertisement data; if you see "Unknown", ensure the ESP32 advertises a name.
-- Classic names improve after pairing; you can pair inside the app or from system settings.
-- Tweak retry/backoff in `ConnectionManager` if you need more aggressive recovery.
+### Connecting to Your Yoga Mat
 
-## Deliverables (for submission)
-- GitHub repo: push this project
-- Android APK: `build/app/outputs/flutter-apk/app-release.apk`
-- Short demo video (≤3 min) showing:
-  - Scanning (BLE + Classic), selecting device, pairing (Classic)
-  - Connecting, streaming RX data
-  - Sending a command
-  - Connection drop + auto-reconnect, app resume behavior
-=======
-# Smart_Yoga_mat_apk
->>>>>>> 1047a8425157544c63b9832e8e6e293a0c08bf1d
+1. Launch the app and grant Bluetooth/Location permissions
+2. Select connection mode: BLE (GATT) or Classic (SPP)
+3. Tap "Scan Devices" to discover nearby devices
+4. Tap on your yoga mat in the device list to connect
+5. Monitor connection via the status indicator
+
+### Sending Commands
+
+Navigate to the **Console** tab:
+- Enter commands (e.g., `LED:ON`, `STATUS`)
+- Tap **Send** to transmit to the device
+- View incoming data in real-time
+- Use preset buttons for common commands
+
+---
+
+## 🐛 Troubleshooting
+
+### Device Not Found
+- Ensure Bluetooth is enabled
+- Grant Location permissions (required for BLE scanning)
+- Check ESP32 is advertising
+
+### Connection Fails
+- Verify ESP32 is powered on
+- Check UUIDs match your ESP32 configuration
+- For Classic Bluetooth, pair in phone settings first
+
+---
+
+**Built with ❤️ using Flutter**
