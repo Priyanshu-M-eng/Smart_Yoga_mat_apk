@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # Smart Yoga Mat POC (Flutter)
 
 Prototype mobile app that connects to an ESP32-based smart yoga mat over Classic Bluetooth (SPP) and Bluetooth Low Energy (BLE), streams basic data, sends commands, and keeps the connection stable (auto-reconnect, retries, timeouts, background resume).
@@ -66,3 +67,6 @@ Permissions (Android):
   - Connecting, streaming RX data
   - Sending a command
   - Connection drop + auto-reconnect, app resume behavior
+=======
+# Smart_Yoga_mat_apk
+>>>>>>> 1047a8425157544c63b9832e8e6e293a0c08bf1d
